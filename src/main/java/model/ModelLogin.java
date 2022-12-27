@@ -7,10 +7,6 @@ public class ModelLogin implements Serializable {
     private String login;
     private String senha;
 
-    public ModelLogin() {
-
-    }
-
     public String getLogin() {
         return login;
     }
