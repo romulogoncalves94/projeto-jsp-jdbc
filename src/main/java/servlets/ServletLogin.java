@@ -62,6 +62,7 @@ public class ServletLogin extends HttpServlet {
                 request.setAttribute("msg", "Informe o Login e Senha corretamente!");
                 redirecionar.forward(request, response);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
