@@ -75,6 +75,20 @@ public class DAOUsuarioRepository {
         String sql = "SELECT * FROM model_login WHERE UPPER(login) = UPPER('"+login+"')";
 
         PreparedStatement statement = connection.prepareStatement(sql);
+        return getModelLogin(modelLogin, statement);
+    }
+
+    public ModelLogin consultaUsuaruioID(String id) throws Exception{
+        ModelLogin modelLogin = new ModelLogin();
+
+        String sql = "SELECT * FROM model_login WHERE id = ?";
+
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setLong(1, Long.parseLong(id));
+        return getModelLogin(modelLogin, statement);
+    }
+
+    private ModelLogin getModelLogin(ModelLogin modelLogin, PreparedStatement statement) throws SQLException {
         ResultSet resultado = statement.executeQuery();
 
         while(resultado.next()) {
