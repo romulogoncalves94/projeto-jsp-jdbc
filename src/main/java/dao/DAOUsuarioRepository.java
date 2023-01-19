@@ -43,7 +43,7 @@ public class DAOUsuarioRepository {
             connection.commit();
         }
 
-        return this.consultaUsuaruio(modelLogin.getLogin());
+        return this.consultaUsuario(modelLogin.getLogin());
     }
 
     public List<ModelLogin> consultarUsuarioList(String nome) throws Exception{
@@ -54,6 +54,20 @@ public class DAOUsuarioRepository {
         statement.setString(1, "%" + nome + "%");
         ResultSet resultSet = statement.executeQuery();
 
+        return getModelLogins(retorno, resultSet);
+    }
+
+    public List<ModelLogin> consultarUsuarioListAll() throws Exception{
+        List<ModelLogin> retorno = new ArrayList<ModelLogin>();
+
+        String sql = "SELECT * FROM model_login";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        ResultSet resultSet = statement.executeQuery();
+
+        return getModelLogins(retorno, resultSet);
+    }
+
+    private List<ModelLogin> getModelLogins(List<ModelLogin> retorno, ResultSet resultSet) throws SQLException {
         while (resultSet.next()) {
 
             ModelLogin modelLogin = new ModelLogin();
@@ -69,7 +83,7 @@ public class DAOUsuarioRepository {
         return retorno;
     }
 
-    public ModelLogin consultaUsuaruio(String login) throws Exception{
+    public ModelLogin consultaUsuario(String login) throws Exception{
         ModelLogin modelLogin = new ModelLogin();
 
         String sql = "SELECT * FROM model_login WHERE UPPER(login) = UPPER('"+login+"')";
@@ -78,7 +92,7 @@ public class DAOUsuarioRepository {
         return getModelLogin(modelLogin, statement);
     }
 
-    public ModelLogin consultaUsuaruioID(String id) throws Exception{
+    public ModelLogin consultaUsuarioID(String id) throws Exception{
         ModelLogin modelLogin = new ModelLogin();
 
         String sql = "SELECT * FROM model_login WHERE id = ?";

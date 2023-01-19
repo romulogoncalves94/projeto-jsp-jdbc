@@ -33,6 +33,8 @@ public class ServletUsuarioController extends HttpServlet {
 
                 String idUser = request.getParameter("id");
                 daoUsuarioRepository.deletarUser(idUser);
+                List<ModelLogin> modelLogins = daoUsuarioRepository.consultarUsuarioListAll();
+                request.setAttribute("modelLogins", modelLogins);
                 request.setAttribute("msg", "Excluído com sucesso!");
                 request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 
@@ -53,13 +55,25 @@ public class ServletUsuarioController extends HttpServlet {
             } else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")){
 
                 String id = request.getParameter("id");
-                ModelLogin modelLogin = daoUsuarioRepository.consultaUsuaruioID(id);
+                ModelLogin modelLogin = daoUsuarioRepository.consultaUsuarioID(id);
+
+                List<ModelLogin> modelLogins = daoUsuarioRepository.consultarUsuarioListAll();
+                request.setAttribute("modelLogins", modelLogins);
 
                 request.setAttribute("msg", "Usuário em edição");
                 request.setAttribute("usuario", modelLogin);
                 request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 
+            } else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("listarUser")) {
+
+                List<ModelLogin> modelLogins = daoUsuarioRepository.consultarUsuarioListAll();
+                request.setAttribute("msg", "Usuários carregados");
+                request.setAttribute("modelLogins", modelLogins);
+                request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+
             } else {
+                List<ModelLogin> modelLogins = daoUsuarioRepository.consultarUsuarioListAll();
+                request.setAttribute("modelLogins", modelLogins);
                 request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
             }
 
