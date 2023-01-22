@@ -111,6 +111,7 @@ public class DAOUsuarioRepository {
             modelLogin.setLogin(resultado.getString("login"));
             modelLogin.setSenha(resultado.getString("senha"));
             modelLogin.setNome(resultado.getString("nome"));
+            modelLogin.setUseradmin(resultado.getBoolean("useradmin"));
         }
         return modelLogin;
 
@@ -132,7 +133,6 @@ public class DAOUsuarioRepository {
             modelLogin.setLogin(resultado.getString("login"));
             modelLogin.setSenha(resultado.getString("senha"));
             modelLogin.setNome(resultado.getString("nome"));
-
         }
         return modelLogin;
     }
@@ -186,10 +186,10 @@ public class DAOUsuarioRepository {
 
         PreparedStatement statement = connection.prepareStatement(sql);
 
-        ResultSet resutlado =  statement.executeQuery();
+        ResultSet resultado =  statement.executeQuery();
 
-        resutlado.next();/*Pra ele entrar nos resultados do sql*/
-        return resutlado.getBoolean("existe");
+        resultado.next();/*Pra ele entrar nos resultados do sql*/
+        return resultado.getBoolean("existe");
     }
     public void deletarUser(String idUser) throws Exception {
         String sql = "DELETE FROM model_login WHERE id = ? and useradmin is false;";

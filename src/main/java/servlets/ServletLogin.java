@@ -1,6 +1,7 @@
 package servlets;
 
 import dao.DAOLoginRepository;
+import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import model.ModelLogin;
 
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class ServletLogin extends HttpServlet {
 
     private DAOLoginRepository daoLoginRepository = new DAOLoginRepository();
+    private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
 
     public ServletLogin() {
 
@@ -44,7 +46,9 @@ public class ServletLogin extends HttpServlet {
                 modelLogin.setSenha(senha);
 
                 if (daoLoginRepository.validarAutenticacao(modelLogin)) {
+                    modelLogin = daoUsuarioRepository.consultaUsuarioLogado(login);
                     request.getSession().setAttribute("usuario", modelLogin.getLogin());
+                    request.getSession().setAttribute("isAdmin", modelLogin.getUseradmin());
 
                     if (url == null || url.equals("null")) {
                         url = "principal/principal.jsp";
