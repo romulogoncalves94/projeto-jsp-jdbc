@@ -8,11 +8,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import model.ModelLogin;
+import org.apache.commons.compress.utils.IOUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.apache.tomcat.util.http.fileupload.RequestContext;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
+@MultipartConfig
 @WebServlet( urlPatterns =  {"/ServletUsuarioController"})
 public class ServletUsuarioController extends ServletGenericUtil {
 
@@ -131,6 +138,13 @@ public class ServletUsuarioController extends ServletGenericUtil {
             modelLogin.setSenha(senha);
             modelLogin.setPerfil(perfil);
             modelLogin.setSexo(sexo);
+
+            if(ServletFileUpload.isMultipartContent(request)) {
+                Part part = request.getPart("fileFoto");
+                byte[] foto = IOUtils.toByteArray(part.getInputStream());
+                String imagemBase64 = new Base64().encodeAsString(foto);
+                System.out.println(imagemBase64);
+            }
 
 
             if (daoUsuarioRepository.validarLogin(modelLogin.getLogin()) && modelLogin.getId() == null) {

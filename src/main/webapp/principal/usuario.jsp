@@ -26,12 +26,18 @@
                                         <div class="col-sm-12">
                                             <div class="card">
                                                 <div class="card-block">
-                                                    <form class="form-material" action="<%= request.getContextPath() %>/ServletUsuarioController" method="post" id="formUser" >
+                                                    <form class="form-material" enctype="multipart/form-data" action="<%= request.getContextPath() %>/ServletUsuarioController" method="post" id="formUser" >
                                                         <input type="hidden" name="acao" id="acao" value="">
                                                         <div class="form-group form-default form-static-label">
                                                             <input type="text" name="id" id="id" class="form-control"  readonly="readonly" value="${modolLogin.id}">
                                                             <span class="form-bar"></span>
                                                             <label class="float-label">ID</label>
+                                                        </div>
+                                                        <div class="form-group form-default input-group mb-4">
+                                                            <div class="input-group-prepend">
+                                                                <img alt="Image User" id="fotobase64" src="" width="70px">
+                                                            </div>
+                                                            <input type="file" id="fileFoto" name="fileFoto" accept="image/*" onchange="visualizarImg('fotobase64', 'fileFoto')" class="form-control-file" style="margin-top: 15px; margin-left: 5px">
                                                         </div>
                                                         <div class="form-group form-default form-static-label">
                                                             <input type="text" name="nome" id="nome" class="form-control" required="required" value="${modolLogin.nome}">
@@ -185,6 +191,22 @@
 </div>
 
 <script type="text/javascript">
+
+    function visualizarImg(fotobase64, fileFoto) {
+        var preview = document.getElementById(fotobase64);
+        var fileUser = document.getElementById(fileFoto).files[0];
+        var reader = new FileReader();
+
+        reader.onloadend = function (){
+            preview.src = reader.result /*Carrega foto na tela*/
+        }
+
+        if(fileUser) {
+            reader.readAsDataURL(fileUser); /*Preview da imagem*/
+        } else {
+            preview.src = '';
+        }
+    }
 
     function verEditar(id) {
         var urlAction = document.getElementById('formUser').action;
