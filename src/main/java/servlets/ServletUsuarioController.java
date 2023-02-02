@@ -128,6 +128,13 @@ public class ServletUsuarioController extends ServletGenericUtil {
             String senha = request.getParameter("senha");
             String perfil = request.getParameter("perfil");
             String sexo = request.getParameter("sexo");
+            String cep = request.getParameter("cep");
+            String logradouro = request.getParameter("logradouro");
+            String bairro = request.getParameter("bairro");
+            String localidade = request.getParameter("localidade");
+            String uf = request.getParameter("uf");
+            String numero = request.getParameter("numero");
+
 
             ModelLogin modelLogin = new ModelLogin();
 
@@ -138,14 +145,25 @@ public class ServletUsuarioController extends ServletGenericUtil {
             modelLogin.setSenha(senha);
             modelLogin.setPerfil(perfil);
             modelLogin.setSexo(sexo);
+            modelLogin.setCep(cep);
+            modelLogin.setLogradouro(logradouro);
+            modelLogin.setBairro(bairro);
+            modelLogin.setLocalidade(localidade);
+            modelLogin.setUf(uf);
+            modelLogin.setNumero(numero);
 
-            if(ServletFileUpload.isMultipartContent(request)) {
-                Part part = request.getPart("fileFoto");
+            Part part = request.getPart("fileFoto");
+            System.out.println("part " + part.getContentType());
+            if (part != null ) {
                 byte[] foto = IOUtils.toByteArray(part.getInputStream());
-                String imagemBase64 = new Base64().encodeAsString(foto);
+                new org.apache.commons.codec.binary.Base64();
+                String imagemBase64 = "data:/" + part.getContentType().split("\\/")[1] + ";base64," + org.apache.commons.codec.binary.Base64.encodeBase64String(foto);
                 System.out.println(imagemBase64);
+                modelLogin.setFotoUser(imagemBase64);
+                modelLogin.setExtensaoFotoUser(part.getContentType().split("\\/")[1]);
+            } else {
+                System.out.println("Nenhuma foto foi enviada");
             }
-
 
             if (daoUsuarioRepository.validarLogin(modelLogin.getLogin()) && modelLogin.getId() == null) {
                 msg = "Já existe usuário com o mesmo login, informe outro login;";

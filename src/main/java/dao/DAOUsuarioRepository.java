@@ -23,7 +23,7 @@ public class DAOUsuarioRepository {
 
         if (objeto.isNovo()) {/*Grava um novo*/
 
-            String sql = "INSERT INTO model_login(login, senha, nome, email, usuario_id, perfil, sexo)  VALUES (?, ?, ?, ?, ?, ?,?);";
+            String sql = "INSERT INTO model_login(login, senha, nome, email, usuario_id, perfil, sexo, cep, logradouro, bairro, localidade, uf, numero)  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
             PreparedStatement preparedSql = connection.prepareStatement(sql);
 
             preparedSql.setString(1, objeto.getLogin());
@@ -33,13 +33,31 @@ public class DAOUsuarioRepository {
             preparedSql.setLong(5, userLogado);
             preparedSql.setString(6, objeto.getPerfil());
             preparedSql.setString(7, objeto.getSexo());
+            preparedSql.setString(8, objeto.getCep());
+            preparedSql.setString(9, objeto.getLogradouro());
+            preparedSql.setString(10, objeto.getBairro());
+            preparedSql.setString(11, objeto.getLocalidade());
+            preparedSql.setString(12, objeto.getUf());
+            preparedSql.setString(13, objeto.getNumero());
 
             preparedSql.execute();
 
             connection.commit();
 
+            if(objeto.getFotoUser() != null && objeto.getFotoUser().isEmpty()) {
+                sql = "UPDATE model_login SET fotouser =?, extensaofotouser = ? WHERE login = ?";
+                preparedSql = connection.prepareStatement(sql);
+                preparedSql.setString(1, objeto.getFotoUser());
+                preparedSql.setString(2, objeto.getExtensaoFotoUser());
+                preparedSql.setString(3, objeto.getLogin());
+
+                preparedSql.execute();
+
+                connection.commit();
+            }
+
         }else {
-            String sql = "UPDATE model_login SET login=?, senha=?, nome=?, email=?, perfil=?, sexo=? WHERE id =  "+objeto.getId()+";";
+            String sql = "UPDATE model_login SET login=?, senha=?, nome=?, email=?, perfil=?, sexo=?, cep=?, logradouro=?, bairro=?, localidade=?, uf=?, numero=? WHERE id =  "+objeto.getId()+";";
 
             PreparedStatement prepareSql = connection.prepareStatement(sql);
 
@@ -49,10 +67,28 @@ public class DAOUsuarioRepository {
             prepareSql.setString(4, objeto.getEmail());
             prepareSql.setString(5, objeto.getPerfil());
             prepareSql.setString(6, objeto.getSexo());
+            prepareSql.setString(7, objeto.getCep());
+            prepareSql.setString(8, objeto.getLogradouro());
+            prepareSql.setString(9, objeto.getBairro());
+            prepareSql.setString(10, objeto.getLocalidade());
+            prepareSql.setString(11, objeto.getUf());
+            prepareSql.setString(12, objeto.getNumero());
 
             prepareSql.executeUpdate();
 
             connection.commit();
+
+            if(objeto.getFotoUser() != null && objeto.getFotoUser().isEmpty()) {
+                sql = "UPDATE model_login SET fotouser =?, extensaofotouser = ? WHERE id = ?";
+                prepareSql = connection.prepareStatement(sql);
+                prepareSql.setString(1, objeto.getFotoUser());
+                prepareSql.setString(2, objeto.getExtensaoFotoUser());
+                prepareSql.setLong(3, objeto.getId());
+
+                prepareSql.execute();
+
+                connection.commit();
+            }
 
         }
 
@@ -142,15 +178,19 @@ public class DAOUsuarioRepository {
             modelLogin.setUseradmin(resutlado.getBoolean("useradmin"));
             modelLogin.setPerfil(resutlado.getString("perfil"));
             modelLogin.setSexo(resutlado.getString("sexo"));
+
+            modelLogin.setCep(resutlado.getString("cep"));
+            modelLogin.setLogradouro(resutlado.getString("logradouro"));
+            modelLogin.setBairro(resutlado.getString("bairro"));
+            modelLogin.setLocalidade(resutlado.getString("localidade"));
+            modelLogin.setUf(resutlado.getString("uf"));
+            modelLogin.setNumero(resutlado.getString("numero"));
         }
 
 
         return modelLogin;
 
     }
-
-
-
 
     public ModelLogin consultaUsuario(String login) throws Exception  {
 
@@ -172,6 +212,12 @@ public class DAOUsuarioRepository {
             modelLogin.setUseradmin(resutlado.getBoolean("useradmin"));
             modelLogin.setPerfil(resutlado.getString("perfil"));
             modelLogin.setSexo(resutlado.getString("sexo"));
+            modelLogin.setCep(resutlado.getString("cep"));
+            modelLogin.setLogradouro(resutlado.getString("logradouro"));
+            modelLogin.setBairro(resutlado.getString("bairro"));
+            modelLogin.setLocalidade(resutlado.getString("localidade"));
+            modelLogin.setUf(resutlado.getString("uf"));
+            modelLogin.setNumero(resutlado.getString("numero"));
         }
 
 
@@ -200,13 +246,18 @@ public class DAOUsuarioRepository {
             modelLogin.setNome(resutlado.getString("nome"));
             modelLogin.setPerfil(resutlado.getString("perfil"));
             modelLogin.setSexo(resutlado.getString("sexo"));
+            modelLogin.setCep(resutlado.getString("cep"));
+            modelLogin.setLogradouro(resutlado.getString("logradouro"));
+            modelLogin.setBairro(resutlado.getString("bairro"));
+            modelLogin.setLocalidade(resutlado.getString("localidade"));
+            modelLogin.setUf(resutlado.getString("uf"));
+            modelLogin.setNumero(resutlado.getString("numero"));
         }
 
 
         return modelLogin;
 
     }
-
 
     public ModelLogin consultaUsuarioID(String id, Long userLogado) throws Exception  {
 
@@ -229,14 +280,17 @@ public class DAOUsuarioRepository {
             modelLogin.setNome(resutlado.getString("nome"));
             modelLogin.setPerfil(resutlado.getString("perfil"));
             modelLogin.setSexo(resutlado.getString("sexo"));
+            modelLogin.setCep(resutlado.getString("cep"));
+            modelLogin.setLogradouro(resutlado.getString("logradouro"));
+            modelLogin.setBairro(resutlado.getString("bairro"));
+            modelLogin.setLocalidade(resutlado.getString("localidade"));
+            modelLogin.setUf(resutlado.getString("uf"));
+            modelLogin.setNumero(resutlado.getString("numero"));
         }
-
 
         return modelLogin;
 
     }
-
-
 
     public boolean validarLogin(String login) throws Exception {
         String sql = "select count(1) > 0 as existe from model_login where upper(login) = upper('"+login+"');";
@@ -249,7 +303,6 @@ public class DAOUsuarioRepository {
         return resutlado.getBoolean("existe");
 
     }
-
 
     public void deletarUser(String idUser) throws Exception {
         String sql = "DELETE FROM model_login WHERE id = ? and useradmin is false;";
