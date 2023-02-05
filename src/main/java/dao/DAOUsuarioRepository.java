@@ -118,7 +118,7 @@ public class DAOUsuarioRepository {
 
         List<ModelLogin> retorno = new ArrayList<ModelLogin>();
 
-        String sql = "select * from model_login where useradmin is false and usuario_id = " + userLogado + " order by nome offset " + offset + " limit 5";
+        String sql = "select * from model_login where useradmin is false and usuario_id = " + userLogado + " offset " + offset + " limit 5";
         PreparedStatement statement = connection.prepareStatement(sql);
 
         ResultSet resultado = statement.executeQuery();
@@ -146,7 +146,7 @@ public class DAOUsuarioRepository {
 
         List<ModelLogin> retorno = new ArrayList<ModelLogin>();
 
-        String sql = "SELECT * FROM model_login WHERE useradmin is false and usuario_id = " + userLogado + " LIMIT 5";
+        String sql = "SELECT * FROM model_login WHERE useradmin is false and usuario_id = " + userLogado + "LIMIT 5";
         PreparedStatement statement = connection.prepareStatement(sql);
 
         ResultSet resultado = statement.executeQuery();
@@ -160,6 +160,56 @@ public class DAOUsuarioRepository {
             modelLogin.setLogin(resultado.getString("login"));
             modelLogin.setNome(resultado.getString("nome"));
             //modelLogin.setSenha(resultado.getString("senha"));
+            modelLogin.setPerfil(resultado.getString("perfil"));
+            modelLogin.setSexo(resultado.getString("sexo"));
+
+            retorno.add(modelLogin);
+        }
+        return retorno;
+    }
+
+    public int consultaUsuarioListTotalPaginaPaginacao(String nome, Long userLogado) throws Exception {
+
+        String sql = "select count(1) as total from model_login  where upper(nome) like upper(?) and useradmin is false and usuario_id = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, "%" + nome + "%");
+        statement.setLong(2, userLogado);
+
+        ResultSet resultado = statement.executeQuery();
+
+        resultado.next();
+
+        Double cadastros = resultado.getDouble("total");
+        Double porPagina = 5.0;
+        Double pagina = cadastros / porPagina;
+        Double resto = pagina % 2;
+
+        if(resto > 0) {
+            pagina++;
+        }
+
+        return pagina.intValue();
+    }
+
+    public List<ModelLogin> consultaUsuarioListOffset(String nome, Long userLogado, String offset) throws Exception {
+
+        List<ModelLogin> retorno = new ArrayList<ModelLogin>();
+
+        String sql = "select * from model_login  where upper(nome) like upper(?) and useradmin is false and usuario_id = ? offset "+ offset+ " limit 5";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setString(1, "%" + nome + "%");
+        statement.setLong(2, userLogado);
+
+        ResultSet resultado = statement.executeQuery();
+
+        while (resultado.next()) { /*percorrer as linhas de resultado do SQL*/
+
+            ModelLogin modelLogin = new ModelLogin();
+
+            modelLogin.setEmail(resultado.getString("email"));
+            modelLogin.setId(resultado.getLong("id"));
+            modelLogin.setLogin(resultado.getString("login"));
+            modelLogin.setNome(resultado.getString("nome"));
             modelLogin.setPerfil(resultado.getString("perfil"));
             modelLogin.setSexo(resultado.getString("sexo"));
 
@@ -187,7 +237,6 @@ public class DAOUsuarioRepository {
             modelLogin.setId(resultado.getLong("id"));
             modelLogin.setLogin(resultado.getString("login"));
             modelLogin.setNome(resultado.getString("nome"));
-            //modelLogin.setSenha(resultado.getString("senha"));
             modelLogin.setPerfil(resultado.getString("perfil"));
             modelLogin.setSexo(resultado.getString("sexo"));
 
@@ -302,7 +351,7 @@ public class DAOUsuarioRepository {
 
         ModelLogin modelLogin = new ModelLogin();
 
-        String sql = "select * from model_login where id = ? and useradmin is false and usuario_id = ?";
+        String sql = "select * from model_login where id = ? and useradmin is false and usuario_id = ? order by nome ASC";
 
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setLong(1, Long.parseLong(id));

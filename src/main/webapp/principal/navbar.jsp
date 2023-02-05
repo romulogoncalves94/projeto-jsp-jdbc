@@ -52,8 +52,8 @@
           </a>
           <ul class="show-notification">
             <li>
-              <h6>Notifications</h6>
-              <label class="label label-danger">New</label>
+              <h6>Notificações</h6>
+              <label class="label label-danger">Novo</label>
             </li>
             <li class="waves-effect waves-light">
               <div class="media">
