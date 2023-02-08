@@ -50,35 +50,33 @@
                                                             <label class="float-label">Email</label>
                                                         </div>
                                                         <div class="form-group form-default form-static-label">
-                                                            <select class="form-control" aria-label="Default select example" name="perfil">
-                                                                <option disabled>Selecione o perfil</option>
+                                                            <select class="form-control"
+                                                                    aria-label="Default select example" name="perfil" >
+                                                                <option disabled="disabled" >[Selecione o Perfil]</option>
                                                                 <option value="ADMIN" <%
                                                                     ModelLogin modelLogin = (ModelLogin) request.getAttribute("modolLogin");
-                                                                    if(modelLogin != null && modelLogin.getPerfil().equals("ADMIN")){
+                                                                    if (modelLogin != null && modelLogin.getPerfil().equals("ADMIN")) {
                                                                         out.print(" ");
                                                                         out.print("selected=\"selected\"");
                                                                         out.print(" ");
-                                                                    }
-                                                                    %> >Admin</option>
+                                                                    } %> >Admin</option>
                                                                 <option value="SECRETARIO" <%
                                                                     modelLogin = (ModelLogin) request.getAttribute("modolLogin");
-                                                                    if(modelLogin != null && modelLogin.getPerfil().equals("SECRETARIO")){
+                                                                    if (modelLogin != null && modelLogin.getPerfil().equals("SECRETARIO")) {
                                                                         out.print(" ");
                                                                         out.print("selected=\"selected\"");
                                                                         out.print(" ");
-                                                                    }
-                                                                %> >Secretário(a)</option>
+                                                                    } %>>Secretário</option>
                                                                 <option value="AUXILIAR" <%
                                                                     modelLogin = (ModelLogin) request.getAttribute("modolLogin");
-                                                                    if(modelLogin != null && modelLogin.getPerfil().equals("AUXILIAR")){
+                                                                    if (modelLogin != null && modelLogin.getPerfil().equals("AUXILIAR")) {
                                                                         out.print(" ");
                                                                         out.print("selected=\"selected\"");
                                                                         out.print(" ");
-                                                                    }
-                                                                %> >Auxiliar</option>
+                                                                    } %>>Auxiliar</option>
                                                             </select>
                                                             <span class="form-bar"></span>
-                                                            <label class="float-label">Perfil</label>
+                                                            <label class="float-label">Perfil:</label>
                                                         </div>
                                                         <div class="form-group form-default form-static-label">
                                                             <input onblur="pesquisaCep()" type="text" name="cep" id="cep" class="form-control" required="required" autocomplete="off" value="${modolLogin.cep}">
@@ -141,6 +139,7 @@
                                                         <button type="button" class="btn btn-primary waves-effect waves-light" onclick="limparForm()">Novo</button>
                                                         <button class="btn btn-primary waves-effect waves-light">Salvar</button>
                                                         <button type="button" class="btn btn-primary waves-effect waves-light" onclick="criarDeleteAjax()">Excluir</button>
+                                                        <a href="<%= request.getContextPath()%>/ServletTelefone?iduser=${modolLogin.id}" class="btn btn-primary waves-effect waves-light">Telefone</a>
                                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Consultar</button>
                                                     </form>
                                                 </div>
