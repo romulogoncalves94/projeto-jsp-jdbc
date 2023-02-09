@@ -24,6 +24,7 @@ public class DAOTelefoneRepository {
         String sql = "SELECT * FROM telefone WHERE usuario_pai_id =?";
 
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setLong(1, idUserPai);
         ResultSet rs = preparedStatement.executeQuery();
 
         while(rs.next()) {
@@ -35,7 +36,6 @@ public class DAOTelefoneRepository {
 
             retorno.add(modelTelefone);
         }
-
 
         return retorno;
 

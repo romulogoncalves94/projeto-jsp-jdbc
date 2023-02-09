@@ -139,7 +139,9 @@
                                                         <button type="button" class="btn btn-primary waves-effect waves-light" onclick="limparForm()">Novo</button>
                                                         <button class="btn btn-primary waves-effect waves-light">Salvar</button>
                                                         <button type="button" class="btn btn-primary waves-effect waves-light" onclick="criarDeleteAjax()">Excluir</button>
-                                                        <a href="<%= request.getContextPath()%>/ServletTelefone?iduser=${modolLogin.id}" class="btn btn-primary waves-effect waves-light">Telefone</a>
+                                                        <c:if test="${modolLogin.id > 0}">
+                                                            <a href="<%= request.getContextPath()%>/ServletTelefone?iduser=${modolLogin.id}" class="btn btn-primary waves-effect waves-light">Telefone</a>
+                                                        </c:if>
                                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Consultar</button>
                                                     </form>
                                                 </div>

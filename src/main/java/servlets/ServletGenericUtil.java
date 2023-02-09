@@ -18,4 +18,11 @@ public class ServletGenericUtil extends HttpServlet {
         String userLogado = (String) session.getAttribute("usuario");
         return daoUsuarioRepository.consultaUsuarioLogado(userLogado).getId();
     }
+
+    public ModelLogin getUserLogadoObj(HttpServletRequest request) throws Exception {
+
+        HttpSession session = request.getSession();
+        String userLogado = (String) session.getAttribute("usuario");
+        return daoUsuarioRepository.consultaUsuarioLogado(userLogado);
+    }
 }
