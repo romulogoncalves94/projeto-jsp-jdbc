@@ -44,6 +44,7 @@ public class FilterAutenticacao implements Filter {
                chain.doFilter(request, response);
            }
            connection.commit();
+
        } catch (Exception e) {
            e.printStackTrace();
            try {

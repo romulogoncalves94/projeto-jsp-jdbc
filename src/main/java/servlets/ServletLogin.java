@@ -18,13 +18,12 @@ public class ServletLogin extends HttpServlet {
     private DAOLoginRepository daoLoginRepository = new DAOLoginRepository();
     private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
 
-    public ServletLogin() {
+    public ServletLogin() {}
 
-    }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String acao = request.getParameter("acao");
-        if(acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("logout")){
+        if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("logout")) {
             request.getSession().invalidate();
             RequestDispatcher redirecionar = request.getRequestDispatcher("index.jsp");
             redirecionar.forward(request, response);
@@ -53,9 +52,9 @@ public class ServletLogin extends HttpServlet {
                     if (url == null || url.equals("null")) {
                         url = "principal/principal.jsp";
                     }
-
                     RequestDispatcher redirecionar = request.getRequestDispatcher(url);
                     redirecionar.forward(request, response);
+
                 } else {
                     RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp");
                     request.setAttribute("msg", "Informe o Login e Senha corretamente!");

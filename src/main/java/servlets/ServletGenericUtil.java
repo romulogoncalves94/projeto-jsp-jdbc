@@ -13,14 +13,12 @@ public class ServletGenericUtil extends HttpServlet {
     private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
 
     public Long getUserLogado(HttpServletRequest request) throws Exception {
-
         HttpSession session = request.getSession();
         String userLogado = (String) session.getAttribute("usuario");
         return daoUsuarioRepository.consultaUsuarioLogado(userLogado).getId();
     }
 
     public ModelLogin getUserLogadoObj(HttpServletRequest request) throws Exception {
-
         HttpSession session = request.getSession();
         String userLogado = (String) session.getAttribute("usuario");
         return daoUsuarioRepository.consultaUsuarioLogado(userLogado);

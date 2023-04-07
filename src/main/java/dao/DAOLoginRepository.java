@@ -22,7 +22,7 @@ public class DAOLoginRepository {
         statement.setString(2, modelLogin.getSenha());
         ResultSet resultSet = statement.executeQuery();
 
-        if(resultSet.next()) {
+        if (resultSet.next()) {
             return true;
         }
         return false;
